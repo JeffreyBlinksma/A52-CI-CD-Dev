@@ -1,0 +1,48 @@
+@page
+@model Area52Entertainment.Pages.Activiteiten.IndexModel
+@{
+    ViewData["Title"] = "Activiteiten";
+}
+
+<h1>Activiteiten</h1>
+
+@if (Model.Activiteiten.Count == 0)
+{
+    <p>Er zijn momenteel geen activiteiten beschikbaar.</p>
+}
+else
+{
+    <div class="card-grid">
+        @foreach (var activiteit in Model.Activiteiten)
+        {
+            <article class="card">
+                <header class="card-header">
+                    <h2>@activiteit.Naam</h2>
+                    <span class="pill pill-type">@activiteit.Type</span>
+                </header>
+                <div class="card-body">
+                    <p>Duur: @activiteit.DuurInMinuten minuten</p>
+                    <p>Basisprijs: @activiteit.BasisPrijs.ToString("C")</p>
+
+                    @if (activiteit is Workshop workshop)
+                    {
+                        <p>Leeftijd: @workshop.MinimumLeeftijd - @workshop.MaximumLeeftijd jaar</p>
+                        @if (workshop.LeeftijdsToeslag.HasValue)
+                        {
+                            <p>Toeslag bovenste leeftijdsgroep: @workshop.LeeftijdsToeslag% </p>
+                        }
+                    }
+                    else if (activiteit is Show show)
+                    {
+                        <p>Max. capaciteit: @show.MaxCapaciteit</p>
+                    }
+                </div>
+                <footer class="card-footer">
+                    <a asp-page="/Reserveringen/Create" asp-route-activiteitId="@activiteit.ActiviteitId" class="btn-primary">
+                        Inschrijven
+                    </a>
+                </footer>
+            </article>
+        }
+    </div>
+}

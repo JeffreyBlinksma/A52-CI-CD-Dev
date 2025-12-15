@@ -1,0 +1,38 @@
+@{
+    var title = ViewData["Title"] as string ?? "Area52 Entertainment";
+}
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@title - Area52 Entertainment</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <span class="brand-title">Area52 Entertainment</span>
+                <span class="brand-subtitle">Shows &amp; Workshops</span>
+            </div>
+            <nav class="main-nav">
+                <a asp-page="/Activiteiten/Index">Activiteiten</a>
+                <a asp-page="/Reserveringen/Index">Reserveringen</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <div class="page-content">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="footer">
+        <span>&copy; @DateTime.Now.Year - Area52 Entertainment</span>
+    </footer>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

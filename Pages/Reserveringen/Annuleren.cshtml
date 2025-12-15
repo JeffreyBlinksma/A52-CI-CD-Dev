@@ -1,0 +1,30 @@
+@page "{id:int}"
+@model Area52Entertainment.Pages.Reserveringen.AnnulerenModel
+@{
+    ViewData["Title"] = "Reservering annuleren";
+}
+
+<h1>Reservering annuleren</h1>
+
+@if (Model.Reservering == null)
+{
+    <p>De opgegeven reservering kon niet worden gevonden.</p>
+}
+else
+{
+    <div class="card">
+        <div class="card-body">
+            <h2>@Model.Reservering.Activiteit.Naam</h2>
+            <p><strong>Deelnemer:</strong> @Model.Reservering.Deelnemer.Naam (@Model.Reservering.Deelnemer.Leeftijd) jaar</p>
+            <p><strong>Starttijd:</strong> @Model.Reservering.StartTijd.ToString("dd-MM-yyyy HH:mm")</p>
+            <p><strong>Totaalprijs:</strong> @Model.Reservering.TotaalPrijs.ToString("C")</p>
+            <p><strong>Annuleringsbeleid:</strong> @Model.Reservering.Activiteit.AnnuleringsBeleid.Beschrijving</p>
+
+            <form method="post">
+                <p>Weet je zeker dat je deze reservering wilt annuleren?</p>
+                <button type="submit" class="btn-danger">Annulering bevestigen</button>
+                <a asp-page="Index" class="btn-secondary">Terug</a>
+            </form>
+        </div>
+    </div>
+}

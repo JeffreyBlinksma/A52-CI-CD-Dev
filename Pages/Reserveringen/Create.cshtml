@@ -1,0 +1,70 @@
+@page
+@model Area52Entertainment.Pages.Reserveringen.CreateModel
+@{
+    ViewData["Title"] = "Inschrijven";
+}
+
+<h1>Inschrijven voor @Model.Activiteit?.Naam</h1>
+
+@if (!string.IsNullOrEmpty(Model.Foutmelding))
+{
+    <div class="alert alert-error">
+        @Model.Foutmelding
+    </div>
+}
+
+@if (Model.Activiteit == null)
+{
+    <p>De opgegeven activiteit kon niet worden gevonden.</p>
+}
+else
+{
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                <input type="hidden" asp-for="ActiviteitId" />
+                <div class="form-group">
+                    <label>Activiteit</label>
+                    <div class="readonly-field">@Model.Activiteit.Naam (@Model.Activiteit.Type)</div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Naam"></label>
+                    <input asp-for="Naam" />
+                    <span asp-validation-for="Naam" class="validation"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Leeftijd"></label>
+                    <input asp-for="Leeftijd" type="number" min="0" />
+                    <span asp-validation-for="Leeftijd" class="validation"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" type="email" />
+                    <span asp-validation-for="Email" class="validation"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="AantalPersonen"></label>
+                    <input asp-for="AantalPersonen" type="number" min="1" />
+                    <span asp-validation-for="AantalPersonen" class="validation"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="StartTijd"></label>
+                    <input asp-for="StartTijd" type="datetime-local" step="60" />
+                    <span asp-validation-for="StartTijd" class="validation"></span>
+                </div>
+
+                <button type="submit" class="btn-primary">Bevestigen</button>
+                <a asp-page="/Activiteiten/Index" class="btn-secondary">Annuleren</a>
+            </form>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,59 @@
+@page
+@model Area52Entertainment.Pages.Reserveringen.IndexModel
+@{
+    ViewData["Title"] = "Reserveringen";
+}
+
+<h1>Reserveringen</h1>
+
+@if (TempData["SuccesMessage"] is string succes)
+{
+    <div class="alert alert-success">@succes</div>
+}
+
+@if (TempData["AnnuleringsResultaat"] is string result)
+{
+    <div class="alert alert-info">@Html.Raw(result)</div>
+}
+
+@if (Model.Reserveringen.Count == 0)
+{
+    <p>Er zijn nog geen reserveringen.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nr.</th>
+                <th>Activiteit</th>
+                <th>Deelnemer</th>
+                <th>Starttijd</th>
+                <th>Aantal</th>
+                <th>Totaalprijs</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var r in Model.Reserveringen)
+        {
+            <tr>
+                <td>@r.ReserveringId</td>
+                <td>@r.Activiteit.Naam</td>
+                <td>@r.Deelnemer.Naam (@r.Deelnemer.Leeftijd)</td>
+                <td>@r.StartTijd.ToString("dd-MM-yyyy HH:mm")</td>
+                <td>@r.AantalPersonen</td>
+                <td>@r.TotaalPrijs.ToString("C")</td>
+                <td>@r.Status</td>
+                <td>
+                    @if (r.Status == "Actief")
+                    {
+                        <a asp-page="Annuleren" asp-route-id="@r.ReserveringId" class="btn-link">Annuleren</a>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
