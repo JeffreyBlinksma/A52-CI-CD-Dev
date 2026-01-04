@@ -25,14 +25,20 @@ jobs:
       run: dotnet publish Area52Entertainment.csproj --no-restore -o build/
     - uses: actions/upload-artifact@v4
       with:
+        name: build
         path: build/
         if-no-files-found: error
+        
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/download-artifact@v7
+      with:
+        name: build
+    - name: list folder content
+      run: ls
     - name: Download Netbird
       env:
         USE_BIN_INSTALL: true
