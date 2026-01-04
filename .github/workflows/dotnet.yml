@@ -46,7 +46,7 @@ jobs:
     - name: Connect to Netbird
       env:
         SETUP_KEY: ${{ secrets.NETBIRD_SETUP_KEY }}
-      run: netbird up --setup-key=${SETUP_KEY} && sleep 5
+      run: netbird up --setup-key=${SETUP_KEY}
     - name: Wait for DNS resolution
       shell: bash
       run: |
@@ -58,6 +58,8 @@ jobs:
         getent hosts ${{ vars.SFTP_HOSTNAME }} >/dev/null 2>&1 \
           && echo "${{ vars.SFTP_HOSTNAME }} resolved" \
           || { echo "timeout"; exit 1; }
+    - name: Wait for network connection
+      run: ping -w 30 -c 1 ${{ vars.SFTP_HOSTNAME }}
     - uses: webfactory/ssh-agent@v0.9.0
       with:
         ssh-private-key: ${{ secrets.SFTP_PRIVATE_KEY }}
