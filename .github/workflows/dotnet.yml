@@ -50,15 +50,15 @@ jobs:
     - name: Wait for DNS resolution
       shell: bash
       run: |
-        DNS_IP=""
         COUNTER=0
-        while [ -z $DNS_IP ] && [ $COUNTER -lt 60 ]; do
-          nslookup ${{ vars.SFTP_HOSTNAME }}
-          DNS_IP=$(nslookup ${{ vars.SFTP_HOSTNAME }} | awk '/^Address: / { print $2 }')
-          [ -z "$DNS_IP" ] && sleep 1
+        until getent hosts ${{ vars.SFTP_HOSTNAME }} >/dev/null 2>&1 || [ "$COUNTER" -ge 60 ]; do
+          sleep 1
           ((COUNTER++))
         done
-        [ -z "$DNS_IP" ] && echo "timeout" || echo $DNS_IP
+        getent hosts ${{ vars.SFTP_HOSTNAME }} >/dev/null 2>&1 \
+          && echo "${{ vars.SFTP_HOSTNAME }} resolved" \
+          || { echo "timeout"; exit 1; }
+
     - uses: webfactory/ssh-agent@v0.9.0
       with:
         ssh-private-key: ${{ secrets.SFTP_PRIVATE_KEY }}
