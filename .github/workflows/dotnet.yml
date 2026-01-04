@@ -46,7 +46,7 @@ jobs:
     - name: Connect to Netbird
       env:
         SETUP_KEY: ${{ secrets.NETBIRD_SETUP_KEY }}
-      run: netbird up --setup-key=${SETUP_KEY}
+      run: netbird up --setup-key=${SETUP_KEY} && sleep 5
     - name: Wait for DNS resolution
       shell: bash
       run: |
