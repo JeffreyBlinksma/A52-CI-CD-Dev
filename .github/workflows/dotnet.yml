@@ -53,7 +53,7 @@ jobs:
         COUNTER=0
         until getent hosts ${{ vars.SFTP_HOSTNAME }} >/dev/null 2>&1 || [ "$COUNTER" -ge 60 ]; do
           sleep 1
-          ((COUNTER++))
+          ((++COUNTER))
         done
         getent hosts ${{ vars.SFTP_HOSTNAME }} >/dev/null 2>&1 \
           && echo "${{ vars.SFTP_HOSTNAME }} resolved" \
