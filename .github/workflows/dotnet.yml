@@ -24,7 +24,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build publishable build
-      run: dotnet publish --no-restore
+      run: dotnet publish --no-restore -o bin/
     - uses: actions/upload-artifact@v4
       with:
         path: bin/
