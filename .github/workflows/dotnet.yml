@@ -47,6 +47,15 @@ jobs:
       env:
         SETUP_KEY: ${{ secrets.NETBIRD_SETUP_KEY }}
       run: netbird up --setup-key=${SETUP_KEY}
+    - name: Wait for DNS resolution
+      run: |
+        DNS_IP=""
+        COUNTER=0
+        while [ -z $DNS_IP ] && [ $COUNTER -lt 60 ]; do
+          DNS_IP=$(nslookup ${{ vars.SFTP_HOSTNAME }} | awk '/^Address: / { print $2 }')
+          [ -z "$DNS_IP" ] && sleep 1
+          ((COUNTER++))
+        done
     - uses: webfactory/ssh-agent@v0.9.0
       with:
         ssh-private-key: ${{ secrets.SFTP_PRIVATE_KEY }}
