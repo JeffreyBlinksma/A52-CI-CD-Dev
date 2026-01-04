@@ -12,9 +12,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
@@ -29,3 +27,16 @@ jobs:
       with:
         path: build/
         if-no-files-found: error
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/download-artifact@v7
+    - name: Download Netbird
+      env:
+        USE_BIN_INSTALL: true
+      run: curl -fsSL https://pkgs.netbird.io/install.sh | sh
+    - name: Connect to Netbird
+      env:
+        SETUP_KEY: ${{ secrets.NETBIRD_SETUP_KEY }}
+      run: netbird up --setup-key=${SETUP_KEY}
