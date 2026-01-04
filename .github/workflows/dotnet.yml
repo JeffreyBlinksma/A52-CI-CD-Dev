@@ -52,7 +52,7 @@ jobs:
         ssh-private-key: ${{ secrets.SFTP_PRIVATE_KEY }}
     - name: Copy files to server
       run: |
-        sftp ${{ secrets.SFTP_USERNAME }}@${{ env.SFTP_HOSTNAME }} <<EOF
+        sftp ${{ secrets.SFTP_USERNAME }}@${{ vars.SFTP_HOSTNAME }} <<EOF
         pwd
         exit
         EOF
